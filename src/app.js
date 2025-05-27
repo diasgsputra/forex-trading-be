@@ -1,10 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const configRoutes = require('./src/routes/configRoutes');
-const orderRoutes = require('./src/routes/orderRoutes');
-const webhookRoutes = require('./src/routes/webhookRoutes');
-const { loadConfig, saveConfig, DEFAULT_STRATEGY_PARAMS } = require('./src/config');
+const configRoutes = require('./routes/configRoutes');
+const orderRoutes = require('./routes/orderRoutes');
+const webhookRoutes = require('./routes/webhookRoutes');
+const { loadConfig, saveConfig, DEFAULT_STRATEGY_PARAMS } = require('./config');
 const path = require('path');
 const fs = require('fs');
 
