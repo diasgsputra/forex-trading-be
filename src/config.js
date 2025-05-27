@@ -1,8 +1,10 @@
-const fs = require('fs');
-const path = require('path');
+// backend/src/config.js
+// const fs = require('fs'); // Hapus
+// const path = require('path'); // Hapus
 
-const CONFIG_FILE = path.join(__dirname, '..', 'strategy_config.json');
-const ORDERS_FILE = path.join(__dirname, '..', 'simulated_orders.json');
+// Ubah ini menjadi objek di memori, bukan dari file
+// let CONFIG_FILE = path.join(__dirname, '..', 'strategy_config.json'); // Hapus
+// let ORDERS_FILE = path.join(__dirname, '..', 'simulated_orders.json'); // Hapus
 
 const DEFAULT_STRATEGY_PARAMS = {
     symbol: "BTCUSDT",
@@ -15,48 +17,31 @@ const DEFAULT_STRATEGY_PARAMS = {
     leverage: 10
 };
 
+// Variabel di memori untuk menyimpan konfigurasi dan order
+// Ini akan hilang saat fungsi direset atau di-deploy ulang!
+let currentConfig = DEFAULT_STRATEGY_PARAMS;
+let simulatedOrders = [];
+
 const loadConfig = () => {
-    try {
-        if (fs.existsSync(CONFIG_FILE)) {
-            const data = fs.readFileSync(CONFIG_FILE, 'utf8');
-            return JSON.parse(data);
-        }
-        return DEFAULT_STRATEGY_PARAMS;
-    } catch (error) {
-        console.error('Error loading config:', error);
-        return DEFAULT_STRATEGY_PARAMS;
-    }
+    // Hanya kembalikan konfigurasi yang ada di memori
+    return currentConfig;
 };
 
 const saveConfig = (config) => {
-    try {
-        fs.writeFileSync(CONFIG_FILE, JSON.stringify(config, null, 4));
-    } catch (error) {
-        console.error('Error saving config:', error);
-    }
+    // Simpan ke memori
+    currentConfig = { ...config }; // Buat salinan agar tidak ada referensi langsung
+    console.log('Config saved to memory:', currentConfig);
 };
 
 const loadOrders = () => {
-    try {
-        if (fs.existsSync(ORDERS_FILE)) {
-            const data = fs.readFileSync(ORDERS_FILE, 'utf8');
-            return JSON.parse(data);
-        }
-        return [];
-    } catch (error) {
-        console.error('Error loading orders:', error);
-        return [];
-    }
+    // Hanya kembalikan order yang ada di memori
+    return simulatedOrders;
 };
 
 const saveOrder = (order) => {
-    try {
-        const orders = loadOrders();
-        orders.push(order);
-        fs.writeFileSync(ORDERS_FILE, JSON.stringify(orders, null, 4));
-    } catch (error) {
-        console.error('Error saving order:', error);
-    }
+    // Tambahkan order ke array di memori
+    simulatedOrders.push(order);
+    console.log('Order saved to memory. Current orders count:', simulatedOrders.length);
 };
 
 module.exports = {
